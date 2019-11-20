@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Домашнее задание на Cookie</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="golos.css">
+
+</head>
+<body>
+<h1>Форма с данными</h1>
+
+<script>
+  function getCookie(name) {
+	let cookie = " " + document.cookie;
+	let search = " " + name + "=";
+	let setStr = null;
+	let offset = 0;
+	let end = 0;
+	if (cookie.length > 0) {
+		offset = cookie.indexOf(search);
+		if (offset != -1) {
+			offset += search.length;
+			end = cookie.indexOf(";", offset)
+			if (end == -1) {
+				end = cookie.length;
+			}
+			setStr = unescape(cookie.substring(offset, end));
+		}
+	}
+	return(setStr);
+  }
+
+  let myCookie = getCookie("user");
+  document.write("<p>Ваш город: " + myCookie + "</p>");
+  if (myCookie.length < 2)  {
+    document.write("<div> <form action='' method='GET'> <input type='text' id='town'> <button id='save_town'>Сохранить!</button></form> </div> ");
+
+        document.getElementById('save_town').addEventListener('click',
+          function() {
+        	let myTown = document.getElementById('town').value;
+            if (myTown.length > 2) {
+              myCookie = "user=" + myTown + "; max-age=3600"; // обновляем только куки с именем 'user' на 1 час	
+  	          document.cookie = myCookie; // обновляем только куки с именем 'user' на 1 час
+              
+            }
+          },
+          false
+        );
+
+        document.getElementById('town').addEventListener('keydown', 
+          function(e) {
+            if (e.keyCode === 13) {
+              alert ('Тут кнопка "Сохранить!" есть. ' + '\n' + 'Ладно и так сойдет');
+            }
+          },
+          false
+        );
+
+  } else {
+  	document.write("<button id='clear_town'>Очистить!</button>");
+
+  	document.getElementById('clear_town').addEventListener('click',
+          function() {
+        	myCookie = "user= ; max-age=3600"; // очищаем  куки с именем 'user'	
+  	        document.cookie = myCookie; 
+            window.location.reload();
+          },
+          false
+        );
+  }
+
+  
+  
+</script>
+
+</body>
+</html>
